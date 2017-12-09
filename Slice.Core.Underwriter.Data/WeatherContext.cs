@@ -14,23 +14,21 @@ namespace Slice.Core.Underwriter.Data
 {
     public class WeatherContext : DbContext
     {
-        public WeatherContext(DbContextOptions<WeatherContext> options) : base(options) { }
+        public WeatherContext(DbContextOptions options) : base(options) { }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseNpgsql(@"Host=slice-data-dev.civlfvzpnkzr.us-east-1.rds.amazonaws.com;Port=5432;Username=uw_dev_writer;Password=und4r1TA!-dev-wr;Database=underwriting_dev");
-            }
-        }
+        #region Models
 
-        public DbSet<Warnings> Warnings { get; set; }
+        public DbSet<Warning> Warnings { get; set; }
 
-        public DbSet<Overrides> Override { get; set; }
-        
+        public DbSet<Override> Override { get; set; }
+
+        #endregion
+
+        #region Events
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Overrides>(entity =>
+            modelBuilder.Entity<Override>(entity =>
             {
                 entity.HasKey(e => new { e.Country, e.Area, e.StartsOn, e.EndsOn, e.OverrideType, e.Warning });
 
@@ -65,13 +63,9 @@ namespace Slice.Core.Underwriter.Data
                 entity.Property(e => e.WarningId).HasColumnName("warning_id");
             });
 
-
-            modelBuilder.Entity<Warnings>(entity =>
+            modelBuilder.Entity<Warning>(entity =>
             {
                 entity.ToTable("warnings", "weather");
-
-                entity.HasIndex(e => new { e.Country, e.Area }).HasName("override_area_idx");
-                entity.HasIndex(e => new { e.Country, e.Area }).HasName("override_country_idx");
 
                 entity.Property(e => e.Country).HasColumnName("country");
                 entity.Property(e => e.Area).HasColumnName("area");
@@ -88,7 +82,7 @@ namespace Slice.Core.Underwriter.Data
                     .HasColumnName("ends_on")
                     .HasColumnType("date");
 
-                entity.Property(e => e.Warning).HasColumnName("warning");
+                entity.Property(e => e.Type).HasColumnName("warning");
                 
                 entity.Property(e => e.Id)
                     .HasColumnName("row_id")
@@ -97,5 +91,7 @@ namespace Slice.Core.Underwriter.Data
 
             modelBuilder.HasSequence("weather_warnings_row_id_seq");
         }
+
+        #endregion
     }
 }

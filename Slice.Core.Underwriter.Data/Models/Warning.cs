@@ -11,26 +11,20 @@ using System;
 
 namespace Slice.Core.Underwriter.Data.Models
 {
-    public class Overrides
+    public class Warning
     {
-        public long RowId { get; set; }
+        public int Id { get; set; }
 
         public string Country { get; set; }
 
         public string Area { get; set; }
 
+        public DateTime SearchedOn { get; set; }
+
         public DateTime StartsOn { get; set; }
 
         public DateTime EndsOn { get; set; }
 
-        public string Warning { get; set; }
-
-        public int? WarningId { get; set; }
-
-        public string OverrideType { get; set; }
-
-        public string CreatedBy { get; set; }
-
-        public DateTime? CreatedOn { get; set; }
+        public string Type { get; set; }
     }
 }

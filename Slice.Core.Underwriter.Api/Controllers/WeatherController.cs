@@ -10,64 +10,89 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Slice.Core.Underwriter.Data;
+using Slice.Core.Underwriter.Api.Models.Request;
+using Slice.Core.Underwriter.Business.Managers;
 using Slice.Core.Underwriter.Data.Models;
 
 namespace Slice.Core.Underwriter.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/weather")]
     public class WeatherController : Controller
     {
-        private readonly WeatherContext _context;
+        private readonly IWeatherManager _weatherManager;
 
-        public WeatherController(WeatherContext context)
+        public WeatherController(IWeatherManager weatherManager)
         {
-            _context = context;
+            _weatherManager = weatherManager;
         }
+
+        #region Override
 
         // GET api/values
         [HttpGet]
         [Route("overrides")]
-        public async Task<IEnumerable<Overrides>> GetOverrides()
+        public async Task<IEnumerable<Override>> GetOverrides()
         {
-            var items = await _context.Override.ToListAsync().ConfigureAwait(false);
+            var items = await _weatherManager.GetOverridesRepository().GetAllAsync().ConfigureAwait(false);
             return items;
-            // return new[] {"value1", "value2"};
         }
+
+        #endregion
+
+        #region Warning
 
         [HttpGet]
         [Route("warnings")]
-        public async Task<IEnumerable<Warnings>> GetWarnings()
+        public async Task<IEnumerable<Warning>> GetWarnings()
         {
-            var items = await _context.Warnings.ToListAsync().ConfigureAwait(false);
+            var items = await _weatherManager.GetWarningsRepository().GetAllAsync().ConfigureAwait(false);
             return items;
-            // return new[] {"value1", "value2"};
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("warnings/{id}")]
+        public async Task<Warning> GetWarningById(int id)
         {
-            return "value";
+            var item = await _weatherManager.GetWarningsRepository().GetAsync(id).ConfigureAwait(false);
+            return item;
         }
 
-        // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        [Route("warnings")]
+        public async Task<IActionResult> AddWarning([FromBody] AddWarningRequest request)
         {
+            if (request == null)
+            {
+                return BadRequest("Invalid request");
+            }
+
+            var warning = await _weatherManager.AddWarningAsync(request.Country, request.Area, request.SearchedOn, request.StartsOn, request.EndsOn, request.Type).ConfigureAwait(false);
+
+            return Ok(warning);
         }
 
         // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("warnings/{id}")]
+        public async Task<IActionResult> UpdateWarning(int id, [FromBody] AddWarningRequest request)
         {
+            if (request == null)
+            {
+                return BadRequest("Invalid request");
+            }
+
+            var warning = await _weatherManager.UpdateWarningAsync(id, request.Country, request.Area, request.SearchedOn, request.StartsOn, request.EndsOn, request.Type).ConfigureAwait(false);
+
+            return Ok(warning);
         }
 
         // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("warnings/{id}")]
+        public async Task<IActionResult> DeleteWarning(int id)
         {
+            await _weatherManager.DeleteWarningById(id).ConfigureAwait(false);
+
+            return Ok();
         }
+
+        #endregion
     }
 }

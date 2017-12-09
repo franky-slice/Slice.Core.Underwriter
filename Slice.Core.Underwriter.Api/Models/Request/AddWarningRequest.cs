@@ -8,23 +8,29 @@
 #endregion
 
 using System;
+using Newtonsoft.Json;
+using Slice.Core.Underwriter.Business.Constants;
 
-namespace Slice.Core.Underwriter.Data.Models
+namespace Slice.Core.Underwriter.Api.Models.Request
 {
-    public class Warnings
+    public class AddWarningRequest
     {
-        public int Id { get; set; }
-
+        [JsonProperty("country")]
         public string Country { get; set; }
 
+        [JsonProperty("area")]
         public string Area { get; set; }
 
+        [JsonProperty("searched_on")]
         public DateTime SearchedOn { get; set; }
 
+        [JsonProperty("starts_on")]
         public DateTime StartsOn { get; set; }
 
+        [JsonProperty("ends_on")]
         public DateTime EndsOn { get; set; }
 
-        public string Warning { get; set; }
+        [JsonProperty("type")]
+        public WarningType Type { get; set; }
     }
 }

@@ -1,15 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿#region Copyright Notice
+
+// Copyright (C) 2017 Slice Labs Inc. - All Rights Reserved
+// Unauthorized copying or re-use of this file or any portion thereof via any medium 
+// without permission from Slice Labs Inc. is strictly prohibited
+// Proprietary and confidential 
+
+#endregion
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Slice.Core.Underwriter.Business.Managers;
 using Slice.Core.Underwriter.Data;
+using Slice.Core.Underwriter.Data.Interfaces;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Slice.Core.Underwriter.Api
 {
@@ -27,7 +33,15 @@ namespace Slice.Core.Underwriter.Api
         {
             services.AddMvc();
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Slice.Core.Underwriter", Version = "v1" });
+            });
+
+
             ConfigureDataContext(services);
+
+            ConfigureDependencies(services);
         }
 
         protected void ConfigureDataContext(IServiceCollection services)
@@ -36,14 +50,29 @@ namespace Slice.Core.Underwriter.Api
             services.AddEntityFrameworkNpgsql().AddDbContext<WeatherContext>(options => options.UseNpgsql(weatherConnectionString));
         }
 
+        protected void ConfigureDependencies(IServiceCollection services)
+        {
+            services.AddScoped(typeof(IWeatherRepository<>), typeof(WeatherRepository<>));
+
+            services.AddScoped<IWeatherManager, WeatherManager>();
+        }
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                // app.UseDeveloperExceptionPage();
+
+                // Register Swagger middleware
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Slice.Core.Underwriter V1");
+                });
             }
 
+            // Register MVC middleware
             app.UseMvc();
         }
     }
