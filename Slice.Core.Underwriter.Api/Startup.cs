@@ -12,9 +12,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Slice.Core.Underwriter.Business.Managers;
 using Slice.Core.Underwriter.Data;
 using Slice.Core.Underwriter.Data.Interfaces;
+using Slice.Core.Underwriter.Weather.Managers;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace Slice.Core.Underwriter.Api
@@ -54,7 +54,8 @@ namespace Slice.Core.Underwriter.Api
         {
             services.AddScoped(typeof(IWeatherRepository<>), typeof(WeatherRepository<>));
 
-            services.AddScoped<IWeatherManager, WeatherManager>();
+            services.AddScoped<IWeatherOverrideManager, WeatherOverrideManager>();
+            services.AddScoped<IWeatherWarningManager, WeatherWarningManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

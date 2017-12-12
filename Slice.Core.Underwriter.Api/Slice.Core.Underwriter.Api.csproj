@@ -13,6 +13,7 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="1.1.0" />
   </ItemGroup>
@@ -22,8 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Slice.Core.Underwriter.Business\Slice.Core.Underwriter.Business.csproj" />
     <ProjectReference Include="..\Slice.Core.Underwriter.Data\Slice.Core.Underwriter.Data.csproj" />
+    <ProjectReference Include="..\Slice.Core.Underwriter.Weather\Slice.Core.Underwriter.Weather.csproj" />
   </ItemGroup>
 
 </Project>

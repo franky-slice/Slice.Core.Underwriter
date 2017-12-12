@@ -9,11 +9,10 @@
 
 using System;
 using Newtonsoft.Json;
-using Slice.Core.Underwriter.Weather.Constants;
 
 namespace Slice.Core.Underwriter.Api.Models.Request
 {
-    public class AddWarningRequest
+    public class GetWarningRequest
     {
         [JsonProperty("country")]
         public string Country { get; set; }
@@ -21,16 +20,7 @@ namespace Slice.Core.Underwriter.Api.Models.Request
         [JsonProperty("area")]
         public string Area { get; set; }
 
-        [JsonProperty("searched_on")]
-        public DateTime SearchedOn { get; set; }
-
-        [JsonProperty("starts_on")]
-        public DateTime StartsOn { get; set; }
-
-        [JsonProperty("ends_on")]
-        public DateTime EndsOn { get; set; }
-
-        [JsonProperty("type")]
-        public WarningType Type { get; set; }
+        [JsonProperty("effective_on")]
+        public DateTime? EffectiveOn { get; set; }
     }
 }
