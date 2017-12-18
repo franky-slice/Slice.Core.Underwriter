@@ -7,12 +7,15 @@
 
 #endregion
 
-using Slice.Core.Underwriter.Data.Interfaces;
+using System;
 
-namespace Slice.Core.Underwriter.Business.Interfaces
+namespace Slice.Core.Underwriter.Common.Extensions
 {
-    public interface IRepositoryManager<T> where T : class, IBaseModel
+    public static class ConversionExtensions
     {
-        IRepository<T> Repository { get; }
+        public static int AsPercent(this double value)
+        {
+            return (int) Math.Round(value * 100, MidpointRounding.AwayFromZero);
+        }
     }
 }

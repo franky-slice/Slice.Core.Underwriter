@@ -11,10 +11,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Extensions\" />
     <Folder Include="Constants\" />
     <Folder Include="Cache\" />
-    <Folder Include="Repositories\" />
+    <Folder Include="Migrations\" />
+    <Folder Include="Managers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Slice.Core.Underwriter.Common\Slice.Core.Underwriter.Common.csproj" />
   </ItemGroup>
 
 </Project>

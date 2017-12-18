@@ -10,9 +10,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using Slice.Core.Underwriter.Data.Interfaces;
 
-namespace Slice.Core.Underwriter.Business.Interfaces
+namespace Slice.Core.Underwriter.Data.Interfaces
 {
     public interface IRepositoryCache
     {

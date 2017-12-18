@@ -11,9 +11,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Slice.Core.Underwriter.Common.Constants;
 using Slice.Core.Underwriter.Data.Interfaces;
 using Slice.Core.Underwriter.Data.Models;
-using Slice.Core.Underwriter.Weather.Constants;
+using Slice.Core.Underwriter.Data.Models.Weather;
 
 namespace Slice.Core.Underwriter.Weather.Managers
 {
@@ -25,13 +26,13 @@ namespace Slice.Core.Underwriter.Weather.Managers
 
         Task<IEnumerable<Warning>> GetAllAsync();
 
-        Task<Warning> GetByIdAsync(int id);
+        Task<Warning> GetByIdAsync(Guid id);
         
         Task<Warning> AddAsync(string country, string area, DateTime searchedOn, DateTime startOn, DateTime endsOn, WarningType warningType);
 
-        Task<Warning> UpdateAsync(int id, string country, string area, DateTime searchedOn, DateTime startOn, DateTime endsOn, WarningType warningType);
+        Task<Warning> UpdateAsync(Guid id, string country, string area, DateTime searchedOn, DateTime startOn, DateTime endsOn, WarningType warningType);
         
-        Task DeleteById(int id);
+        Task DeleteById(Guid id);
 
         Task<IEnumerable<Warning>> GetByAreaOn(string country, string area, DateTime? effectiveOn);
     }
@@ -52,7 +53,7 @@ namespace Slice.Core.Underwriter.Weather.Managers
             return await _repository.GetAllAsync().ConfigureAwait(false);
         }
 
-        public async Task<Warning> GetByIdAsync(int id)
+        public async Task<Warning> GetByIdAsync(Guid id)
         {
             return await _repository.GetAsync(id).ConfigureAwait(false);
         }
@@ -71,14 +72,14 @@ namespace Slice.Core.Underwriter.Weather.Managers
                 StartsOn = startOn,
                 EndsOn = endsOn,
                 SearchedOn = searchedOn,
-                Type = warningType.ToString()
+                WarningType = warningType
             };
 
             var item = await _repository.AddAsync(warning).ConfigureAwait(false);
             return item;
         }
         
-        public async Task<Warning> UpdateAsync(int id, string country, string area, DateTime searchedOn, DateTime startOn, DateTime endsOn, WarningType warningType)
+        public async Task<Warning> UpdateAsync(Guid id, string country, string area, DateTime searchedOn, DateTime startOn, DateTime endsOn, WarningType warningType)
         {
             var current = await _repository.GetAsync(id).ConfigureAwait(false);
             if (current == null)
@@ -94,7 +95,7 @@ namespace Slice.Core.Underwriter.Weather.Managers
                 StartsOn = startOn,
                 EndsOn = endsOn,
                 SearchedOn = searchedOn,
-                Type = warningType.ToString()
+                WarningType = warningType
             };
 
             try
@@ -109,7 +110,7 @@ namespace Slice.Core.Underwriter.Weather.Managers
             }
         }
 
-        public async Task DeleteById(int id)
+        public async Task DeleteById(Guid id)
         {
             var current = await _repository.GetAsync(id).ConfigureAwait(false);
             if (current == null)

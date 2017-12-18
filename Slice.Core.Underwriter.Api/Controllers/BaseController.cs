@@ -8,10 +8,19 @@
 #endregion
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Slice.Core.Underwriter.Api.Controllers
 {
     public abstract class BaseController : Controller
     {
+        protected ILogger Logger;
+
+        protected BaseController()
+        {
+            var loggerFactory = new LoggerFactory();
+
+            Logger = loggerFactory.CreateLogger(GetType().Name);
+        }
     }
 }

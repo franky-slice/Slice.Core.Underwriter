@@ -7,18 +7,10 @@
 
 #endregion
 
-using System;
-
 namespace Slice.Core.Underwriter.Data.Interfaces
 {
-    public interface IAuditable
+    public interface IRepositoryManager<T> where T : class, IBaseModel
     {
-        string CreatedBy { get; set; }
-
-        DateTime? CreatedOn { get; set; }
-
-        string UpdatedBy { get; set; }
-
-        DateTime? UpdatedOn { get; set; }
+        IRepository<T> Repository { get; }
     }
 }

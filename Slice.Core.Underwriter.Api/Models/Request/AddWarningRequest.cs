@@ -9,7 +9,7 @@
 
 using System;
 using Newtonsoft.Json;
-using Slice.Core.Underwriter.Weather.Constants;
+using Slice.Core.Underwriter.Common.Constants;
 
 namespace Slice.Core.Underwriter.Api.Models.Request
 {

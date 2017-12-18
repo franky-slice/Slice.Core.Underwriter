@@ -34,6 +34,24 @@ namespace Slice.Core.Underwriter.Data.Interfaces
             _context = context;
         }
 
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _context.Dispose();
+                }
+                _disposed = true;
+            }
+        }
+
         #region Sync
 
         public IQueryable<T> GetAll()
@@ -41,7 +59,7 @@ namespace Slice.Core.Underwriter.Data.Interfaces
             return _context.Set<T>();
         }
 
-        public virtual T Get(int id)
+        public virtual T Get(Guid id)
         {
             return _context.Set<T>().Find(id);
         }
@@ -118,86 +136,148 @@ namespace Slice.Core.Underwriter.Data.Interfaces
 
         public virtual async Task<ICollection<T>> GetAllAsync()
         {
-            return await _context.Set<T>().ToListAsync().ConfigureAwait(false);
+            try
+            {
+                return await _context.Set<T>().ToListAsync().ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                //_logger.LogError($"Error: {e.Message}");
+                throw;
+            }
         }
 
-        public virtual async Task<T> GetAsync(int id)
+        public virtual async Task<T> GetAsync(Guid id)
         {
-            return await _context.Set<T>().FindAsync(id).ConfigureAwait(false);
+            try
+            {
+                return await _context.Set<T>().FindAsync(id).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                //_logger.LogError($"Error: {e.Message}");
+                throw;
+            }
         }
 
         public virtual async Task<T> AddAsync(T t)
         {
-            _context.Set<T>().Add(t);
-            await _context.SaveChangesAsync().ConfigureAwait(false);
-            return t;
+            try
+            {
+                _context.Set<T>().Add(t);
+                await _context.SaveChangesAsync().ConfigureAwait(false);
+                return t;
+            }
+            catch (Exception e)
+            {
+                //_logger.LogError($"Error: {e.Message}");
+                throw;
+            }
         }
 
         public virtual async Task<T> FindAsync(Expression<Func<T, bool>> match)
         {
-            return await _context.Set<T>().SingleOrDefaultAsync(match).ConfigureAwait(false);
+            try
+            {
+                return await _context.Set<T>().SingleOrDefaultAsync(match).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                //_logger.LogError($"Error: {e.Message}");
+                throw;
+            }
         }
 
         public async Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> match)
         {
-            return await _context.Set<T>().Where(match).ToListAsync().ConfigureAwait(false);
+            try
+            {
+                return await _context.Set<T>().Where(match).ToListAsync().ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                //_logger.LogError($"Error: {e.Message}");
+                throw;
+            }
         }
 
         public virtual async Task<int> DeleteAsync(T entity)
         {
-            _context.Set<T>().Remove(entity);
-            return await _context.SaveChangesAsync().ConfigureAwait(false);
+            try
+            {
+                _context.Set<T>().Remove(entity);
+                return await _context.SaveChangesAsync().ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+               // _logger.LogError($"Error: {e.Message}");
+                throw;
+            }
         }
 
         public virtual async Task<T> UpdateAsync(object key, T t)
         {
-            if (t == null)
+            try
             {
-                return null;
-            }
+                if (t == null)
+                {
+                    return null;
+                }
 
-            var exist = await _context.Set<T>().FindAsync(key).ConfigureAwait(false);
-            if (exist != null)
-            {
-                _context.Entry(exist).CurrentValues.SetValues(t);
-                await _context.SaveChangesAsync().ConfigureAwait(false);
+                var exist = await _context.Set<T>().FindAsync(key).ConfigureAwait(false);
+                if (exist != null)
+                {
+                    _context.Entry(exist).CurrentValues.SetValues(t);
+                    await _context.SaveChangesAsync().ConfigureAwait(false);
+                }
+                return exist;
             }
-            return exist;
+            catch (Exception e)
+            {
+                //_logger.LogError($"Error: {e.Message}");
+                throw;
+            }
         }
 
         public async Task<int> CountAsync()
         {
-            return await _context.Set<T>().CountAsync().ConfigureAwait(false);
+            try
+            {
+                return await _context.Set<T>().CountAsync().ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                //_logger.LogError($"Error: {e.Message}");
+                throw;
+            }
         }
 
         public virtual async Task<int> SaveAsync()
         {
-            return await _context.SaveChangesAsync().ConfigureAwait(false);
+            try
+            {
+                return await _context.SaveChangesAsync().ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                //_logger.LogError($"Error: {e.Message}");
+                throw;
+            }
         }
-  
+
         public virtual async Task<ICollection<T>> FindByAsync(Expression<Func<T, bool>> predicate)
         {
-            return await _context.Set<T>().Where(predicate).ToListAsync().ConfigureAwait(false);
+            try
+            {
+                return await _context.Set<T>().Where(predicate).ToListAsync().ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                //_logger.LogError($"Error: {e.Message}");
+                throw;
+            }
         }
 
         #endregion
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    _context.Dispose();
-                }
-                _disposed = true;
-            }
-        }
     }
 }

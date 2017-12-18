@@ -7,7 +7,7 @@
 
 #endregion
 
-namespace Slice.Core.Underwriter.Weather.Constants
+namespace Slice.Core.Underwriter.Common.Constants
 {
     public enum WarningType
     {

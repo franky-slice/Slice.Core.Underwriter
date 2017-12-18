@@ -8,4 +8,8 @@
     <ProjectReference Include="..\Slice.Core.Underwriter.Data\Slice.Core.Underwriter.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+
 </Project>

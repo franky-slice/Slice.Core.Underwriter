@@ -9,16 +9,15 @@
 
 using System;
 
-namespace Slice.Core.Underwriter.Business.Interfaces
+namespace Slice.Core.Underwriter.Data.Models.Rce
 {
-    public interface IBaseModel
+    public interface IRceBaseModel
     {
         Guid Id { get; set; }
+    }
 
-        DateTime? DateCreated { get; set; }
-
-        DateTime? DateModified { get; set; }
-
-        bool IsDeleted { get; set; }
+    public abstract class RceBaseModel : IRceBaseModel
+    {
+        public Guid Id { get; set; }
     }
 }

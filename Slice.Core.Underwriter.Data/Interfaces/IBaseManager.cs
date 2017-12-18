@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Slice.Core.Underwriter.Business.Interfaces
+namespace Slice.Core.Underwriter.Data.Interfaces
 {
     public interface IBaseManager<T> : IDisposable, IRepositoryManager<T> where T : class, IBaseModel
     {

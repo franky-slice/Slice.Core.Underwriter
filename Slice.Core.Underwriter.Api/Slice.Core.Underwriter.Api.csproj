@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Middleware\" />
     <Folder Include="Models\Response\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
@@ -23,7 +24,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Slice.Core.Underwriter.Business\Slice.Core.Underwriter.Business.csproj" />
+    <ProjectReference Include="..\Slice.Core.Underwriter.Common\Slice.Core.Underwriter.Common.csproj" />
     <ProjectReference Include="..\Slice.Core.Underwriter.Data\Slice.Core.Underwriter.Data.csproj" />
+    <ProjectReference Include="..\Slice.Core.Underwriter.Risk\Slice.Core.Underwriter.Risk.csproj" />
     <ProjectReference Include="..\Slice.Core.Underwriter.Weather\Slice.Core.Underwriter.Weather.csproj" />
   </ItemGroup>
 

@@ -7,11 +7,13 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Slice.Core.Underwriter.Api.Models.Request;
 using Slice.Core.Underwriter.Data.Models;
+using Slice.Core.Underwriter.Data.Models.Weather;
 using Slice.Core.Underwriter.Weather.Managers;
 
 namespace Slice.Core.Underwriter.Api.Controllers.Weather
@@ -26,6 +28,14 @@ namespace Slice.Core.Underwriter.Api.Controllers.Weather
             _manager = manager;
         }
 
+        [HttpPost]
+        [Route("query")]
+        public async Task<IEnumerable<Warning>> Query(GetWarningRequest request)
+        {
+            var items = await _manager.GetByAreaOn(request.Country, request.Area, request.EffectiveOn).ConfigureAwait(false);
+            return items;
+        }
+
         #region CRUD
 
         [HttpGet]
@@ -36,7 +46,7 @@ namespace Slice.Core.Underwriter.Api.Controllers.Weather
         }
 
         [HttpGet("{id}")]
-        public async Task<Warning> Get(int id)
+        public async Task<Warning> Get(Guid id)
         {
             var item = await _manager.GetByIdAsync(id).ConfigureAwait(false);
             return item;
@@ -57,7 +67,7 @@ namespace Slice.Core.Underwriter.Api.Controllers.Weather
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] AddWarningRequest request)
+        public async Task<IActionResult> Put(Guid id, [FromBody] AddWarningRequest request)
         {
             if (request == null)
             {
@@ -71,7 +81,7 @@ namespace Slice.Core.Underwriter.Api.Controllers.Weather
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             await _manager.DeleteById(id).ConfigureAwait(false);
 
@@ -79,13 +89,5 @@ namespace Slice.Core.Underwriter.Api.Controllers.Weather
         }
 
         #endregion
-
-        [HttpPost]
-        [Route("query")]
-        public async Task<IEnumerable<Warning>> Query(GetWarningRequest request)
-        {
-            var items = await _manager.GetByAreaOn(request.Country, request.Area, request.EffectiveOn).ConfigureAwait(false);
-            return items;
-        }
     }
 }

@@ -7,11 +7,13 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Slice.Core.Underwriter.Api.Models.Request;
-using Slice.Core.Underwriter.Data.Models;
+using Slice.Core.Underwriter.Data.Models.Weather;
 using Slice.Core.Underwriter.Weather.Managers;
 
 namespace Slice.Core.Underwriter.Api.Controllers.Weather
@@ -31,12 +33,14 @@ namespace Slice.Core.Underwriter.Api.Controllers.Weather
         [HttpGet]
         public async Task<IEnumerable<Override>> GetAll()
         {
+            Logger.LogWarning("Get call called");
+
             var items = await _manager.GetAllAsync().ConfigureAwait(false);
             return items;
         }
 
         [HttpGet("{id}")]
-        public async Task<Override> Get(int id)
+        public async Task<Override> Get(Guid id)
         {
             var item = await _manager.GetByIdAsync(id).ConfigureAwait(false);
             return item;
@@ -57,7 +61,7 @@ namespace Slice.Core.Underwriter.Api.Controllers.Weather
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] AddWarningRequest request)
+        public async Task<IActionResult> Put(Guid id, [FromBody] AddWarningRequest request)
         {
             if (request == null)
             {
@@ -71,7 +75,7 @@ namespace Slice.Core.Underwriter.Api.Controllers.Weather
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             await _manager.DeleteById(id).ConfigureAwait(false);
 
@@ -85,6 +89,7 @@ namespace Slice.Core.Underwriter.Api.Controllers.Weather
         public async Task<IEnumerable<Override>> Query(GetWarningRequest request)
         {
             var items = await _manager.GetByAreaOn(request.Country, request.Area, request.EffectiveOn).ConfigureAwait(false);
+
             return items;
         }
     }

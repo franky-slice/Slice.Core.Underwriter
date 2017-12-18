@@ -15,6 +15,10 @@ using System.Threading.Tasks;
 
 namespace Slice.Core.Underwriter.Data.Interfaces
 {
+    public interface IDwellingRepository<T> : IRepository<T> where T : class
+    {
+    }
+
     public interface IWeatherRepository<T> : IRepository<T> where T : class
     {
     }
@@ -37,7 +41,7 @@ namespace Slice.Core.Underwriter.Data.Interfaces
 
         IQueryable<T> FindBy(Expression<Func<T, bool>> predicate);
 
-        T Get(int id);
+        T Get(Guid id);
 
         IQueryable<T> GetAll();
 
@@ -65,7 +69,7 @@ namespace Slice.Core.Underwriter.Data.Interfaces
 
         Task<ICollection<T>> GetAllAsync();
 
-        Task<T> GetAsync(int id);
+        Task<T> GetAsync(Guid id);
 
         Task<int> SaveAsync();
 

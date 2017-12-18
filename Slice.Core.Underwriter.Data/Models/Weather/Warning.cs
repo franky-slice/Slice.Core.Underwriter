@@ -8,29 +8,22 @@
 #endregion
 
 using System;
+using Slice.Core.Underwriter.Common.Constants;
 
-namespace Slice.Core.Underwriter.Data.Models
+namespace Slice.Core.Underwriter.Data.Models.Weather
 {
-    public class Override
+    public class Warning : BaseModel
     {
-        public long RowId { get; set; }
-
         public string Country { get; set; }
 
         public string Area { get; set; }
+
+        public DateTime SearchedOn { get; set; }
 
         public DateTime StartsOn { get; set; }
 
         public DateTime EndsOn { get; set; }
 
-        public string Warning { get; set; }
-
-        public int? WarningId { get; set; }
-
-        public string OverrideType { get; set; }
-
-        public string CreatedBy { get; set; }
-
-        public DateTime? CreatedOn { get; set; }
+        public WarningType WarningType { get; set; }
     }
 }
