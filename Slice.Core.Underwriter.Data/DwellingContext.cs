@@ -17,7 +17,7 @@ namespace Slice.Core.Underwriter.Data
 {
     public class DwellingContext : DbContext
     {
-        public DwellingContext(DbContextOptions options) : base(options)
+        public DwellingContext(DbContextOptions<DwellingContext> options) : base(options)
         {
         }
 

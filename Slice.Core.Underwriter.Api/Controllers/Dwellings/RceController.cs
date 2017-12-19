@@ -8,14 +8,9 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Slice.Core.Underwriter.Business.Managers;
-using Slice.Core.Underwriter.Data;
-using Slice.Core.Underwriter.Data.Interfaces;
 using Slice.Core.Underwriter.Data.Models.Rce;
 
 namespace Slice.Core.Underwriter.Api.Controllers.Dwellings
@@ -43,7 +38,6 @@ namespace Slice.Core.Underwriter.Api.Controllers.Dwellings
                 Console.WriteLine(e);
                 throw;
             }
-       
         }
     }
 }

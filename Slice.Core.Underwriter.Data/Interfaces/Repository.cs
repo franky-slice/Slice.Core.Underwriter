@@ -16,6 +16,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Slice.Core.Underwriter.Data.Interfaces
 {
+    public class DwellingRepository<T> : Repository<T>, IDwellingRepository<T> where T : class
+    {
+        public DwellingRepository(DwellingContext context) : base(context)
+        {
+        }
+    }
+
     public class WeatherRepository<T> : Repository<T>, IWeatherRepository<T> where T : class
     {
         public WeatherRepository(WeatherContext context) : base(context)

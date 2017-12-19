@@ -58,8 +58,7 @@ namespace Slice.Core.Underwriter.Api
                 options => options.UseNpgsql(weatherConnectionString,
                     x => x.MigrationsHistoryTable("__MyMigrationsHistory", "weather")));
 
-
-            var dwellingConnectionString = Configuration.GetConnectionString("DwellingContect");
+            var dwellingConnectionString = Configuration.GetConnectionString("DwellingContext");
             services.AddEntityFrameworkNpgsql().AddDbContext<DwellingContext>(
                 options => options.UseNpgsql(dwellingConnectionString));
         }
@@ -69,6 +68,7 @@ namespace Slice.Core.Underwriter.Api
             services.AddSingleton<ILoggerFactory, LoggerFactory>();
 
             services.AddScoped(typeof(IWeatherRepository<>), typeof(WeatherRepository<>));
+            services.AddScoped(typeof(IDwellingRepository<>), typeof(DwellingRepository<>));
 
             // Weather Management
             services.AddScoped<IWeatherOverrideManager, WeatherOverrideManager>();
